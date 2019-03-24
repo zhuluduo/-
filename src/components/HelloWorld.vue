@@ -2,6 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>{{URL}} Links</h2>
+		<p v-for="(item,index) in dataList">{{item.id}} -- {{item.body}}</p>
   </div>
 </template>
 
@@ -11,9 +12,24 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-			URL: process.env.url_api
+			URL: process.env.url_api,
+			dataList:[]
     }
-  }
+  },
+	methods:{
+		ajaxs:function(){
+			this.$axios.get('http://jsonplaceholder.typicode.com/posts?userId=1').then((res)=>{
+				console.log(res)
+				this.dataList = res.data;
+				console.log(this.dataList)
+			}).cathc((res)=>{
+				console.log('错误')
+			})
+		}
+	},
+	mounted() {
+		this.ajaxs();
+	}
 }
 </script>
 
